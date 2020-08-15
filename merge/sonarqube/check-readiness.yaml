@@ -1,0 +1,14 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    web_context: "{{ web_context }}"
+    hostname: "{{ hostname }}"
+  tasks:
+    - name: waiting for the service to be up
+      uri:
+        url: http://{{ hostname }}{{ web_context }}/new
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 5
+      delay: 30
